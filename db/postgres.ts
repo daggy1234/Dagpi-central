@@ -2,6 +2,9 @@ import { Database } from "../deps.ts";
 import Token from "./token.ts";
 import Application from "./application.ts";
 
+
+console.log(`BEGIN CONNECTING ${Deno.env.get("username")}`)
+
 const db = new Database("postgres", {
   host: Deno.env.get("host")!,
   username: Deno.env.get("username")!,
