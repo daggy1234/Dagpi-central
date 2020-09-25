@@ -1,13 +1,13 @@
 import makeid from "../..//utils/token-gen.ts";
 import {Token} from "../../db/postgres.ts";
 import { soxa } from '../../deps.ts'
-import env from "../../utils/envs.ts";
+
 
 let config = {
   baseURL: 'https://auth.dagpi.tk/',
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
-    'Authorization': env.token
+    'Authorization': Deno.env.get("token")
   }
 }
 

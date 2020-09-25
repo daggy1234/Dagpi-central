@@ -1,9 +1,9 @@
-import env from "../utils/envs.ts";
 
 const auth = async(ctx: any, next: any)  => {
     
     const token = ctx.request.headers.get('Authorization');
-    if (token === env.token) {
+    const auth = Deno.env.get("token");
+    if (token === auth) {
         await next();
     } else {
         ctx.response.status = 403;

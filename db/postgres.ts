@@ -1,13 +1,12 @@
 import { Database } from "../deps.ts";
-import env from "../utils/envs.ts";
 import Token from "./token.ts";
 import Application from "./application.ts";
 
 const db = new Database("postgres", {
-  host: env.host,
-  username: env.username,
-  password: env.password,
-  database: env.database,
+  host: Deno.env.get("host")!,
+  username: Deno.env.get("username")!,
+  password: Deno.env.get("password")!,
+  database: Deno.env.get("database")!,
 });
 
 db.link([Token,Application]);
