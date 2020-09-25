@@ -3,13 +3,14 @@ import Token from "./token.ts";
 import Application from "./application.ts";
 
 
-console.log(`BEGIN CONNECTING ${Deno.env.get("username")}`)
+console.log(`BEGIN CONNECTING ${Deno.env.get("USERNAME")}`)
+console.log(Deno.env.get("FLY_ALLOC_ID"));
 
 const db = new Database("postgres", {
-  host: Deno.env.get("host")!,
-  username: Deno.env.get("username")!,
-  password: Deno.env.get("password")!,
-  database: Deno.env.get("database")!,
+  host: Deno.env.get("HOST")!,
+  username: Deno.env.get("USERNAME")!,
+  password: Deno.env.get("PASSWORD")!,
+  database: Deno.env.get("DATABASE")!,
 });
 
 db.link([Token,Application]);

@@ -7,7 +7,7 @@ let config = {
   baseURL: 'https://auth.dagpi.tk/',
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
-    'Authorization': Deno.env.get("token")
+    'Authorization': Deno.env.get("TOKEN")
   }
 }
 

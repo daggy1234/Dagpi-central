@@ -8,17 +8,6 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
-        - name: Create .env file
-          uses: SpicyPizza/create-envfile@v1.0
-          with:
-            host: ${{secrets.HOST}}
-            username: ${{secrets.USERNAME}}
-            password: ${{secrets.password}}
-            database: dagpi
-            deployment: production
-            PORT: 8080
-            token: ${{secrets.TOKEN}}
-
         - uses: superfly/flyctl-actions@1.1
           with:
             args: "deploy"

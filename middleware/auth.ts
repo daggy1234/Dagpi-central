@@ -2,7 +2,7 @@
 const auth = async(ctx: any, next: any)  => {
     
     const token = ctx.request.headers.get('Authorization');
-    const auth = Deno.env.get("token");
+    const auth = Deno.env.get("TOKEN");
     if (token === auth) {
         await next();
     } else {
