@@ -1,5 +1,5 @@
 import env from "../utils/envs.ts";
-import {Status } from "https://deno.land/x/oak/mod.ts";
+
 const auth = async(ctx: any, next: any)  => {
     
     const token = ctx.request.headers.get('Authorization');

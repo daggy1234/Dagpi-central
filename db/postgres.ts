@@ -1,4 +1,4 @@
-import { Database } from "https://deno.land/x/denodb/mod.ts";
+import { Database } from "../deps.ts";
 import env from "../utils/envs.ts";
 import Token from "./token.ts";
 import Application from "./application.ts";

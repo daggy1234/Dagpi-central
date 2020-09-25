@@ -1,6 +1,6 @@
 import makeid from "../..//utils/token-gen.ts";
 import {Token} from "../../db/postgres.ts";
-import { soxa } from 'https://deno.land/x/soxa/mod.ts'
+import { soxa } from '../../deps.ts'
 import env from "../../utils/envs.ts";
 
 let config = {

@@ -1,5 +1,5 @@
 import { Application } from "../../db/postgres.ts";
-import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import { v4 } from "../../deps.ts";
 
 const Apps = async ({ response }: { response: any }) => {
   let data = await Application.all();
