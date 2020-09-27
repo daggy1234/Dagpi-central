@@ -23,7 +23,8 @@ const AddApp = async (
         appname: name,
         appurl: url,
         appdescription: description,
-        appuserid: +user
+        appuserid: +user,
+        approved: false
     })
     response.body = {app: app};
     //console.log(name,description);

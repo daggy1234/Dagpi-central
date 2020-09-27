@@ -26,6 +26,10 @@ class Application extends Model {
             allowNull: false,
             type: DataTypes.BIG_INTEGER,
             //unique: true,
+        },
+        approved: {
+            allowNull: false,
+            type: DataTypes.BOOLEAN
         }
     }
 }
