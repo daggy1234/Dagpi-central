@@ -17,12 +17,6 @@ app.use(trouter.routes());
 app.use(trouter.allowedMethods());
 app.use(errorHandler);
 
-
-app.use((ctx) => {
-  ctx.response.body = "Hello World!";
-});
-
-
 app.addEventListener("listen", ({ secure, hostname, port }) => {
   const protocol = secure ? "https://" : "http://";
   const url = `${protocol}${hostname ?? "localhost"}:${port}`;

@@ -7,7 +7,7 @@ import {
   updateToken,
 } from "./tokens/index.ts";
 import {
-  Apps, AddApp, GetApp, DeleteApp
+  Apps, AddApp, GetApp, DeleteApp,ApproveApp
 } from "./app/index.ts";
 const trouter = new Router();
 
@@ -20,5 +20,6 @@ trouter
   .get("/app",Apps)
   .post("/addapp",AddApp)
   .get("/userapp/:user/",GetApp)
-  .delete("/deleteapp/:user/",DeleteApp);
+  .delete("/deleteapp/:user/",DeleteApp)
+  .patch("/approveapp/:user/",ApproveApp);
 export default trouter;

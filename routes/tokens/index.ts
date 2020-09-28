@@ -37,6 +37,7 @@ const getToken = async (
 const addToken = async (
   { params, response }: { params: { user: string }; response: any },
 ) => {
+  try{
   if (params.user) {
       let userid: bigint = BigInt(params.user);
       let token = makeid(64);
@@ -55,12 +56,19 @@ const addToken = async (
   } else {
     response.status = 400;
     response.body = { "err": "No Parameter for Userid" };
+  }} catch(err) {
+    response.status = 500;
+    response.body = {
+      status: "fail",
+      message: err.toString()
+    }
   }
 };
 
 const deleteToken = async (
   { params, response }: { params: { user: string }; response: any },
 ) => {
+  try{
   if (params.user) {
       let userid: bigint = BigInt(params.user);
       let user = await Token.where("userid",params.user).get();
@@ -74,12 +82,19 @@ const deleteToken = async (
   } else {
     response.status = 400
     response.body = { "err": "No Parameter for Userid" };
+  }} catch(err) {
+    response.status = 500;
+    response.body = {
+      status: "fail",
+      message: err.toString()
+    }
   }
 };
 
 const updateToken = async (
   { params, response }: { params: { user: string }; response: any },
 ) => {
+  try{
   if (params.user) {
       let userid: bigint = BigInt(params.user);
       let token = makeid(64);
@@ -95,5 +110,12 @@ const updateToken = async (
   } else {
     response.body = { "err": "No Parameter for Userid" };
   }
+} catch(err) {
+  response.status = 500;
+  response.body = {
+    status: "fail",
+    message: err.toString()
+  }
+}
 };
 export { Tokens, getToken, addToken, deleteToken, updateToken };

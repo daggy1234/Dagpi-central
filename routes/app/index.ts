@@ -23,7 +23,7 @@ const AddApp = async (
         appname: name,
         appurl: url,
         appdescription: description,
-        appuserid: +user,
+        appuserid: user,
         approved: false
     })
     response.body = {app: app};
@@ -31,7 +31,11 @@ const AddApp = async (
     //response.body = {data: name};
     return;
     } catch (err) {
-        console.log(err);
+      response.status = 500;
+      response.body = {
+        status: "fail",
+        message: err.toString()
+      }
     };
 };
 
@@ -39,7 +43,7 @@ const GetApp = async (
     { params, response }: { params: { user: string }; response: any },
   ) => {
     if (params.user) {
-        const userid = +params.user;
+        const userid = params.user;
         let data = await Application.where("appuserid", userid).get();
         response.body = { "data": data };
     } else {
@@ -49,17 +53,40 @@ const GetApp = async (
 
   };
 
+const ApproveApp = async (
+  { params, response }: { params: { user: string }; response: any },
+) => {
+  if (params.user) {
+    try{
+      let app = await Application.where('uu',params.user).update('approved',true);
+      response.body = { app: app}
+  } catch(err) {
+    response.status = 500;
+    response.body = {
+      status: "fail",
+      message: err.toString()
+    }
+  }
+}
+};
+
 const DeleteApp = async (
     { params, response }: { params: { user: string }; response: any },
   ) => {
+  try{
     if (params.user) {
-        const userid = +params.user;
-        let data = await Application.where("appuserid", userid).delete();
+        let data = await Application.where("uu", params.user).delete();
         response.body = { "data": "Deleted" };
     } else {
         response.status = 400
         response.body = { "err": "No Parameter for Userid" };
       }
-
+  } catch (err) {
+    response.status = 500;
+    response.body = {
+      status: "fail",
+      message: err.toString()
+    }
+  }
   };
-export {Apps,AddApp,GetApp,DeleteApp};
+export  {Apps,AddApp,GetApp,DeleteApp,ApproveApp};
