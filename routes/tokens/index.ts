@@ -4,7 +4,7 @@ import { soxa } from '../../deps.ts'
 
 
 let config = {
-  baseURL: 'https://auth.dagpi.tk/',
+  baseURL: 'https://api.dagpi.xyz/',
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Authorization': Deno.env.get("TOKEN")
