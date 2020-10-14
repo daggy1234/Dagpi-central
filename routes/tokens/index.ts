@@ -73,9 +73,9 @@ const deleteToken = async (
   if (params.user) {
       let userid: bigint = BigInt(params.user);
       let user = await Token.where("userid",params.user).get();
-      let token = user.apikey;
-      let data = await Token.where("userid", params.user).delete();
-      let resp  = await soxa.get(`/deletekey/${token}`,config)
+      let token: string = user[0].apikey;
+      let data = await Token.where("apikey", token).delete();
+      let resp  = await soxa.get(`deletekey/${token}`,config)
       let dat = (resp.status === 200 ) ? { "data": resp.data,"status": true } : { "data": resp.data,"status": false }
       response.body = dat;
       
@@ -103,7 +103,7 @@ const updateToken = async (
         "apikey",
         token,
       );
-      let resp  = await soxa.get(`/resetkey/${token}/${userid}`,config)
+      let resp  = await soxa.get(`resetkey/${token}/${userid}`,config)
       let dat = (resp.status === 200 ) ? { "data": resp.data,"status": true } : { "data": resp.data,"status": false }
       response.body = dat;
       
