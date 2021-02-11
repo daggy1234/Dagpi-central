@@ -2,8 +2,7 @@ import { Database } from "../deps.ts";
 import Token from "./token.ts";
 import Application from "./application.ts";
 
-
-console.log(`BEGIN CONNECTING ${Deno.env.get("USERNAME")}`)
+console.log(`BEGIN CONNECTING ${Deno.env.get("USERNAME")}`);
 console.log(Deno.env.get("FLY_ALLOC_ID"));
 
 const db = new Database("postgres", {
@@ -13,9 +12,9 @@ const db = new Database("postgres", {
   database: Deno.env.get("DATABASE")!,
 });
 
-db.link([Token,Application]);
+db.link([Token, Application]);
 //await db.sync({ drop: true });
 await db.sync();
 console.log("CONNECTED");
 
-export {Token,Application};
+export { Application, Token };

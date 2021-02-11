@@ -1,6 +1,4 @@
-
-
-  import { isHttpError, Status } from "../deps.ts";
+import { isHttpError, Status } from "../deps.ts";
 
 export default async (ctx: any, next: any) => {
   try {
@@ -18,11 +16,11 @@ export default async (ctx: any, next: any) => {
       ctx.response.status = status;
       ctx.response.type = "json";
       if (status === 404) {
-      ctx.response.body = {
-        status: status >= 400 && status < 500 ? "fail" : "error",
-        message: err.message,
-      };
-    }
+        ctx.response.body = {
+          status: status >= 400 && status < 500 ? "fail" : "error",
+          message: err.message,
+        };
+      }
     }
   }
 };

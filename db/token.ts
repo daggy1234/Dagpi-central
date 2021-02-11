@@ -9,13 +9,13 @@ class Token extends Model {
     userid: {
       type: DataTypes.BIG_INTEGER,
       allowNull: false,
-      //primaryKey: true
+      // primaryKey: true
     },
     apikey: {
       type: DataTypes.STRING,
       length: 64,
       allowNull: false,
-      //unique: true,
+      // unique: true,
     },
     totaluses: {
       type: DataTypes.INTEGER,
@@ -23,6 +23,10 @@ class Token extends Model {
     enhanced: {
       type: DataTypes.BOOLEAN,
     },
+    ratelimit: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   };
 
 }

@@ -1,13 +1,12 @@
-import "https://deno.land/x/dotenv/load.ts"
+import "https://deno.land/x/dotenv/load.ts";
 import { Application } from "./deps.ts";
 import trouter from "./routes/router.ts";
 import auth from "./middleware/auth.ts";
 import logger from "https://deno.land/x/oak_logger/mod.ts";
 import errorHandler from "./controllers/errorhandler.ts";
 
-
-const HOST =  "0.0.0.0";
-const PORT = Deno.env.get("PORT")|| 8080;
+const HOST = "0.0.0.0";
+const PORT = Deno.env.get("PORT") || 8080;
 
 const app = new Application();
 app.use(auth);
