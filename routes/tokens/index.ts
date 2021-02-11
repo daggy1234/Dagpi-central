@@ -1,6 +1,6 @@
 import makeid from "../..//utils/token-gen.ts";
 import { Token } from "../../db/postgres.ts";
-import { soxa } from "../../deps.ts";
+import { Model, soxa } from "../../deps.ts";
 import {PremiumApp} from "../app/index.ts"
 
 let config = {
@@ -37,7 +37,7 @@ const updateLimit = async (
     if (params.user && params.limit) {
       let limit = +params.limit;
       let userid: bigint = BigInt(params.user);
-      let user = await Token.where("userid", params.user).get();
+      let user = await Token.where("userid", params.user).all();
       let token: string = user[0].apikey;
       let resp = await soxa.get(`changelimits/${token}/${params.limit}`, config);
       let dat = (resp.status === 200)
@@ -117,7 +117,7 @@ const deleteToken = async (
   try {
     if (params.user) {
       let userid: bigint = BigInt(params.user);
-      let user = await Token.where("userid", params.user).get();
+      let user = await Token.where("userid", params.user).all();
       let token: string = user[0].apikey;
       let data = await Token.where("apikey", token).delete();
       let resp = await soxa.get(`deletekey/${token}`, config);
