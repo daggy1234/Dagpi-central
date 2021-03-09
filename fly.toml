@@ -1,5 +1,5 @@
 # fly.toml file generated for dagpi-central on 2020-09-25T23:39:03+05:30
-
+# Fly has been removed
 app = "dagpi-central"
 
 
