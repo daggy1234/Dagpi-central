@@ -2,4 +2,4 @@
 
 ## The api central to dagpi that controls everything
 
-## Deplpoyed with google cloud runs
+## Deplpoyed with google cloud run.
