@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model application {
+  uu             String   @id @db.Uuid
+  appname        String   @db.VarChar(255)
+  appdescription String   @db.VarChar(255)
+  appurl         String   @db.VarChar(255)
+  appuserid      BigInt   @unique
+  approved       Boolean
+  premium        Boolean
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime @updatedAt @db.Timestamptz(6)
+}
+
+model tokens {
+  userid     BigInt   @id
+  apikey     String   @unique @db.VarChar(64)
+  totaluses  Int
+  enhanced   Boolean
+  ratelimit  Int
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @updatedAt @db.Timestamptz(6)
+}
+
+model user {
+  id            Int    @id @default(autoincrement())
+  userid        BigInt @unique
+  client_id     String @unique @db.VarChar(32)
+  client_secret String @unique @db.VarChar(256)
+  email         String
+  name          String
+}
+
+model cli {
+  id            Int    @id @default(autoincrement())
+  client_id     String @unique @db.VarChar(32)
+  name          String
+  token         String @unique @db.VarChar(50)
+}

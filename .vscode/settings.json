@@ -1,14 +1,23 @@
 {
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-  },
-  "deno.enable": true,
-  "deno.unstable": false,
-  "deno.lint": true,
-  "deno.import_intellisense_origins": {
-    "https://deno.land": true
-  },
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "dagpi-test",
+            "database": "${workspaceFolder:dagpi-centrak}/dagpi.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "dagpi-test",
+            "database": "${workspaceFolder:dagpi-centrak}/dagpi.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:dagpi-centrak}/dagpi.db",
+            "name": "dagpi-data-sqlite"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
 }

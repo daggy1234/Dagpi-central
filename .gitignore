@@ -1,2 +1,12 @@
 *.yml
+#*.env
+*.key
+*.pem
 *.env
+node_modules/
+dist/
+.vscode/
+*.db
+app/templates/**/*
+.vscode/
+*.log
