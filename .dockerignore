@@ -1,0 +1,10 @@
+node_modules/
+.vscode/
+dist/
+Dockerfile
+docker-compose.yml
+nodemon.json
+.env
+.eslintrc
+.editorconfig
+README.md

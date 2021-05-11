@@ -10,3 +10,4 @@ dist/
 app/templates/**/*
 .vscode/
 *.log
+data/

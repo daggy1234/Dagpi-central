@@ -19,6 +19,7 @@ export class Api {
   private init() {
     this.loadMiddleware();
     this.addRoutes();
+    this.errorHandler();
   }
 
   loadMiddleware() {
@@ -29,19 +30,36 @@ export class Api {
   }
 
   addRoutes() {
+    this.app.use((request, res, next) => {
+      if (request.url === "/") {
+        res.send({
+          message:
+            "This is a private api dagpi uses to manage central/admin stuff. All protected. Visit dashboard at https://dagpi.xyz instead!",
+        });
+      } else {
+        next();
+      }
+    });
     this.app.use("/", this.router);
     new AppRouting(this.router);
+  }
+
+  private errorHandler() {
+    this.app.use((request, res) => {
+      res.status(404).send({ path: request.path, message: "does not exist" });
+    });
   }
 
   public run() {
     const port = process.env.PORT || 8000;
     const server = http.createServer(this.app);
-    console.log("Starting....");
+    console.log(`Starting server on ${port}`);
     server.listen(port);
     server.on("error", this.eh);
   }
 
   eh(error) {
+    console.log(error.toString());
     const port = error.port;
     if (error.syscall !== "listen") {
       throw error;

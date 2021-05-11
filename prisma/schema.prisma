@@ -36,6 +36,7 @@ model user {
   client_secret String @unique @db.VarChar(256)
   email         String
   name          String
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
 }
 
 model cli {
@@ -43,4 +44,5 @@ model cli {
   client_id     String @unique @db.VarChar(32)
   name          String
   token         String @unique @db.VarChar(50)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
 }

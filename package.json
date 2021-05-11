@@ -7,10 +7,12 @@
   "author": "Daggy1234 <arnav.jindal7@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "clean": "rm -rf lib",
+    "build": "tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettier:fix": "prettier --parser typescript --write \"app/**/*.ts\"",
-    "prod": "cross-env NODE_ENV=production nodemon -V --exec ts-node app/server.ts",
+    "prod": "prisma generate && cross-env NODE_ENV=production node dist/server.js",
     "start": "cross-env NODE_ENV=local nodemon -V --exec ts-node app/server.ts",
     "dev": "cross-env NODE_ENV=development nodemon -V --exec ts-node app/server.ts"
   },
