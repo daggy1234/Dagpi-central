@@ -1,6 +1,6 @@
 {
   "name": "dagpi-central",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Central management Api",
   "main": "app/server.ts",
   "repository": "https://github.com/Daggy1234/Dagpi-central.git",

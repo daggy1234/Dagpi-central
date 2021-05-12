@@ -83,13 +83,11 @@ export class TokenRouter implements AppRoute {
             userid: userid,
           },
         });
-        console.log(data);
         const token: string = data.apikey;
         if (token) {
           const resp: AxiosResponse = await http
             .client()
             .get(`deletekey/${token}`);
-          console.log(resp);
           const dat =
             resp.status === 200
               ? { data: resp.data, status: true }
@@ -120,7 +118,12 @@ export class TokenRouter implements AppRoute {
     try {
       if (request.params.user) {
         const userid = BigInt(request.params.user);
-        const token = newToken();
+        const user = await db.db().user.findUnique({
+          where: {
+            userid: userid,
+          },
+        });
+        const token = newToken(user.client_id);
         const resp = await http.client().get(`addkey/${token}/${userid}`);
         const dat =
           resp.status === 200
@@ -158,7 +161,12 @@ export class TokenRouter implements AppRoute {
     try {
       if (request.params.user) {
         const userid = BigInt(request.params.user);
-        const token = newToken();
+        const user = await db.db().user.findUnique({
+          where: {
+            userid: userid,
+          },
+        });
+        const token = newToken(user.client_id);
         const resp = await http.client().get(`resetkey/${token}/${userid}`);
         const dat =
           resp.status === 200

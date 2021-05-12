@@ -1,4 +1,4 @@
-import crytpo from "crypto";
+import crypto from "crypto";
 
 function makeid(length: number) {
   let result = "";
@@ -12,11 +12,20 @@ function makeid(length: number) {
 }
 
 function csprng(length: number): string {
-  return crytpo.randomBytes(length).toString("hex");
+  return crypto.randomBytes(length).toString("hex");
 }
 
-function newToken(): string {
-  return makeid(64);
+function btoa(toEncode: string): string {
+  return Buffer.from(toEncode)
+    .toString("base64")
+    .replace("=", "")
+    .replace("=", "");
+}
+
+function newToken(client_id: string): string {
+  const date = btoa(Math.round(new Date().valueOf() / 1000).toString());
+  const secret = crypto.randomBytes(8).toString("hex");
+  return `${date}.${client_id}.${secret}`;
 }
 
 export { makeid, csprng, newToken };
