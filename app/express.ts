@@ -3,6 +3,8 @@ import { auth } from "./middleware";
 import { mgan } from "./utils";
 import * as http from "http";
 import express from "express";
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 
 import { AppRouting } from "./routes";
 
@@ -12,6 +14,14 @@ export class Api {
 
   constructor() {
     this.app = express();
+    Sentry.init({
+      dsn: process.env.SENTRY,
+      integrations: [
+        new Sentry.Integrations.Http({ tracing: true }),
+        new Tracing.Integrations.Express({ app: this.app }),
+      ],
+      tracesSampleRate: 1.0,
+    });
     this.router = express.Router();
     this.init();
   }
@@ -26,20 +36,12 @@ export class Api {
     this.app.use(auth);
     this.app.use(json({ limit: "50mb" }));
     this.app.use(urlencoded({ limit: "50mb", extended: true }));
+    this.app.use(Sentry.Handlers.requestHandler());
+    this.app.use(Sentry.Handlers.tracingHandler());
     this.app.use(mgan);
   }
 
   addRoutes() {
-    this.app.use((request, res, next) => {
-      if (request.url === "/") {
-        res.send({
-          message:
-            "This is a private api dagpi uses to manage central/admin stuff. All protected. Visit dashboard at https://dagpi.xyz instead!",
-        });
-      } else {
-        next();
-      }
-    });
     this.app.use("/", this.router);
     new AppRouting(this.router);
   }
