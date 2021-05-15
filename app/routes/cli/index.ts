@@ -12,6 +12,7 @@ export class CliRouter implements AppRoute {
   constructor() {
     this.router.post("/", this.AddToken);
     this.router.delete("/", this.deleteToken);
+    this.router.get("/:user", this.GetToken);
   }
 
   public async AddToken(request: Request, response: Response): Promise<any> {
@@ -79,6 +80,33 @@ export class CliRouter implements AppRoute {
         status: "fail",
         message: err.toString(),
       });
+    }
+  }
+
+  async GetToken(request: Request, response: Response) {
+    const params = request.params;
+    if (params.user) {
+      try {
+        const user_id = BigInt(params.user);
+        const u = await db.db().user.findUnique({
+          where: {
+            userid: user_id,
+          },
+        });
+        const token = await db.db().cli.findMany({
+          where: {
+            client_id: u.client_id,
+          },
+        });
+        response.send({ data: parse(token) });
+      } catch (err) {
+        response.status(500).send({
+          status: "fail",
+          message: err.toString(),
+        });
+      }
+    } else {
+      response.status(400).send({ err: "No Parameter for Userid" });
     }
   }
 }

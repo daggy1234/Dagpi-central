@@ -11,6 +11,7 @@ export class SelfRouter implements AppRoute {
 
   constructor() {
     this.router.get("/:admin_token", this.getData);
+    this.router.get("/reset_token/:admin_token", this.resetToken);
   }
 
   async getData(request: Request, response: Response): Promise<any> {
