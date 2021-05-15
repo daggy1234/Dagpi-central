@@ -41,7 +41,7 @@ model user {
 
 model cli {
   id            Int    @id @default(autoincrement())
-  client_id     String @unique @db.VarChar(32)
+  client_id     String @db.VarChar(32)
   name          String
   token         String @unique @db.VarChar(50)
   created_at    DateTime @default(now()) @db.Timestamptz(6)
