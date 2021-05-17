@@ -25,18 +25,17 @@ function sendEmail(to: string, subject: string, message: string): boolean {
         Data: subject,
       },
     },
-    Source: "notifier@noreply.mail.dagpi.xyz",
+    Source: "Dagpi <notifier@noreply.mail.dagpi.xyz>",
   };
-
+  let out;
   ses.sendEmail(params, (err, data) => {
     if (err) {
-      console.log(err, err.stack);
-      return false;
+      out = false;
     } else {
-      console.log("Email sent.", data);
+      out = true;
     }
   });
-  return true;
+  return out;
 }
 
 function sendEmailTemplate(
@@ -50,18 +49,17 @@ function sendEmailTemplate(
       ToAddresses: [to],
     },
     TemplateData: data,
-    Source: "notifier@noreply.mail.dagpi.xyz",
+    Source: "Dagpi <notifier@noreply.mail.dagpi.xyz>",
   };
-
+  let out;
   ses.sendTemplatedEmail(params, (err, data) => {
     if (err) {
-      console.log(err, err.stack);
-      return false;
+      out = false;
     } else {
-      console.log("Email sent.", data);
+      out = true;
     }
   });
-  return true;
+  return out;
 }
 
 export { sendEmail, sendEmailTemplate };
