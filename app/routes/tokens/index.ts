@@ -1,6 +1,6 @@
 import { AppRoute } from "../app-route";
 import { db } from "../../db";
-import { parse, newToken } from "../../utils";
+import { parse, newToken, sendEmailTemplate } from "../../utils";
 import { AxiosResponse } from "axios";
 import { http } from "../../http";
 import { Request, Response, Router } from "express";
@@ -181,6 +181,7 @@ export class TokenRouter implements AppRoute {
               apikey: token,
             },
           });
+          sendEmailTemplate(user.email, JSON.stringify({}), "DagpiTokReset");
           response.send(dat);
         } else {
           response.status(500).send({

@@ -36,7 +36,7 @@ export class UserRouter implements AppRoute {
           client_id: client_id,
         },
       });
-      // sendEmailTemplate(email, JSON.stringify({ name: name }), "DagpiWelcome");
+      sendEmailTemplate(email, JSON.stringify({ name: name }), "DagpiWelcome");
       response.send({ app: parse(user_p) });
       return;
     } catch (err) {
