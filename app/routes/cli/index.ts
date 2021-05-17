@@ -40,6 +40,7 @@ export class CliRouter implements AppRoute {
         u.email,
         JSON.stringify({
           title: "New Dagpi admin token was generated",
+          message: "A new admin token was generated for you account.",
           content: `Dear ${u.name}\nA new dagpi admin token was generated for your account.You can manage admin tokens in the dagpi user dashboard.\n\nIf it wasn't you who permitted this operation, reset you discord login immediately. and delete the token.\n\nSincerily,\nDagpi`,
         }),
         "DagpiAction"

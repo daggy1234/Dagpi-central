@@ -132,6 +132,8 @@ export class AppRouter implements AppRoute {
           user.email,
           JSON.stringify({
             title: "Dagpi App Deletion",
+            message:
+              "Hey your dagpi app was deleted along with corresponding tokens, cli tokens and more.",
             content:
               "Your Dagpi app was deleted. This means all linked api tokens and app related info are gone. To recreate an app, head to the dashboard and fill the form.",
           }),
@@ -177,6 +179,8 @@ export class AppRouter implements AppRoute {
         user_json.email,
         JSON.stringify({
           title: "Dagpi app created",
+          message:
+            "Your dagpi application has been created and is on our team's review list",
           content:
             "Congratulations, you have submitted a dagpi application :). Our approvers will be reviewing your application and updating you on the discord. You will also recieve an email. Monitor status via the dashboard.",
         }),
