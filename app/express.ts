@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { json, urlencoded } from "body-parser";
 import { auth } from "./middleware";
 import { mgan } from "./utils";
@@ -34,7 +35,14 @@ export class Api {
 
   loadMiddleware() {
     this.app.use(auth);
-    this.app.use(json({ limit: "50mb" }));
+    this.app.use(
+      json({
+        limit: "50mb",
+        verify: (req, res, buf) => {
+          req.rawBody = buf;
+        },
+      })
+    );
     this.app.use(urlencoded({ limit: "50mb", extended: true }));
     this.app.use(Sentry.Handlers.requestHandler());
     this.app.use(Sentry.Handlers.tracingHandler());

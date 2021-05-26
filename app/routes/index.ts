@@ -5,7 +5,7 @@ import { CliRouter } from "./cli";
 import { AppRoute } from "./app-route";
 import { TokenRouter } from "./tokens";
 import { SelfRouter } from "./self";
-
+import { PaymentRouter } from "./payments";
 export class AppRouting {
   constructor(private route: Router) {
     this.route = route;
@@ -18,6 +18,7 @@ export class AppRouting {
     this.addRouter(new CliRouter());
     this.addRouter(new TokenRouter());
     this.addRouter(new SelfRouter());
+    this.addRouter(new PaymentRouter());
   }
 
   addRouter(config: AppRoute) {

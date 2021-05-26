@@ -15,6 +15,9 @@
     "baseUrl": "./",
     "incremental": true
   },
-  "include": ["app/**/*.ts"],
+  "ts-node": {
+    "files": true
+  },
+  "include": ["app/**/*.ts", "./types"],
   "exclude": ["node_modules"]
 }

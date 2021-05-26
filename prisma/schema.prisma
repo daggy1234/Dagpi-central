@@ -46,3 +46,22 @@ model cli {
   token         String @unique @db.VarChar(50)
   created_at    DateTime @default(now()) @db.Timestamptz(6)
 }
+
+model stripe_donation {
+  id            Int    @id @default(autoincrement())
+  client_id     String @db.VarChar(32)
+  receipt       String
+  charge_id     String
+  amount        Int
+  customer_id   String
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model paypal_donation {
+  id            Int    @id @default(autoincrement())
+  client_id     String @db.VarChar(32)
+  charge_id     String
+  amount        Int
+  customer_id   String
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+}

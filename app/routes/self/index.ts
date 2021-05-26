@@ -10,7 +10,8 @@ export class SelfRouter implements AppRoute {
   public router: Router = Router();
 
   constructor() {
-    this.router.get("/:admin_token", this.getData);
+    this.router.get("/app/:admin_token", this.getData);
+    this.router.get("/token/:admin_token", this.getDataToken);
     this.router.get("/reset_token/:admin_token", this.resetToken);
   }
 
@@ -39,16 +40,47 @@ export class SelfRouter implements AppRoute {
             appuserid: user_id,
           },
         });
-        const token = await db.db().tokens.findUnique({
+        response.send(
+          parse({
+            app: app,
+          })
+        );
+      } else {
+        response
+          .status(403)
+          .send("Token sent was invalid/not present in our system");
+      }
+    }
+  }
+
+  async getDataToken(request: Request, response: Response): Promise<any> {
+    if (!request.params.admin_token) {
+      response.status(400).send({
+        err:
+          "Needs both client_id and admin_token set in the url like /admin_token",
+      });
+    } else {
+      const out = await db.db().cli.findUnique({
+        where: {
+          token: request.params.admin_token,
+        },
+      });
+      if (out) {
+        const c_id = out.client_id;
+        const user = await db.db().user.findUnique({
+          where: {
+            client_id: c_id,
+          },
+        });
+        const user_id = BigInt(user.userid);
+        const app = await db.db().tokens.findUnique({
           where: {
             userid: user_id,
           },
         });
         response.send(
           parse({
-            user: user_id,
-            app: app,
-            token: token,
+            token: app,
           })
         );
       } else {
