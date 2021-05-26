@@ -3,6 +3,7 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN rm -rf node_modules && yarn install --frozen-lockfile
 COPY tsconfig*.json ./
+COPY types types
 COPY app app
 RUN yarn build
 
