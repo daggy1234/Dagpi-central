@@ -1,7 +1,7 @@
 import { AppRoute } from "../app-route";
 import { db } from "../../db";
 import { http } from "../../http";
-import { parse } from "../../utils";
+import { parse, newToken, sendEmailTemplate } from "../../utils";
 
 import { Request, Response, Router } from "express";
 
@@ -95,8 +95,7 @@ export class SelfRouter implements AppRoute {
     try {
       if (!request.params.admin_token) {
         response.status(400).send({
-          err:
-            "Needs both client_id and admin_token set in the url like /admin_token",
+          err: "Needs  admin_token set in the url like /admin_token",
         });
       } else {
         const out = await db.db().cli.findUnique({
@@ -111,6 +110,7 @@ export class SelfRouter implements AppRoute {
               client_id: c_id,
             },
           });
+          const new_token = newToken(c_id);
           const token = await db.db().tokens.findUnique({
             where: {
               userid: user.userid,
@@ -119,21 +119,26 @@ export class SelfRouter implements AppRoute {
           if (token) {
             const resp = await http
               .client()
-              .get(`resetkey/${token.apikey}/${user.userid}`);
+              .get(`resetkey/${new_token}/${user.userid}`);
             const dat =
               resp.status === 200
                 ? { data: resp.data, status: true }
                 : { data: resp.data, status: false };
             if (dat.status) {
-              await db.db().tokens.update({
+              const payload = await db.db().tokens.update({
                 where: {
                   userid: user.userid,
                 },
                 data: {
-                  apikey: token.apikey,
+                  apikey: new_token,
                 },
               });
-              response.send(dat);
+              sendEmailTemplate(
+                user.email,
+                JSON.stringify({}),
+                "DagpiTokReset"
+              );
+              response.send(parse(payload));
             } else {
               response.status(500).send({
                 status: "fail",
