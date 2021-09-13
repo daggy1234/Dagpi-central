@@ -17,7 +17,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/daggy1234/dagbot,daggy1234/dagbot
+          images: ghcr.io/daggy1234/dagpi-central,daggy1234/dagpi-central
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
