@@ -65,3 +65,20 @@ model paypal_donation {
   customer_id   String
   created_at    DateTime @default(now()) @db.Timestamptz(6)
 }
+
+model stripe_customer {
+  id            Int    @id @default(autoincrement())
+  client_id     String @unique @db.VarChar(32)
+  customer_id   String @unique
+}
+
+model stripe_subscription {
+  customer_id   String @unique
+  subscription_id String @unique
+  price_id String
+  subscription_start DateTime @db.Timestamptz(6)
+  subscription_end DateTime @db.Timestamptz(6)
+  cancelled Boolean
+  active Boolean
+  ratelimit Int
+}

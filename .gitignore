@@ -11,3 +11,4 @@ app/templates/**/*
 .vscode/
 *.log
 data/
+subs.txt

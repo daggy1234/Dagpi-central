@@ -2,6 +2,8 @@ import { Api } from "./express";
 import { db } from "./db";
 import { http } from "./http";
 import { stripe } from "./stripe";
+import cron from "node-cron";
+import { ExpireSubscriptions } from "./utils";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -27,6 +29,12 @@ console.log("axios ready!");
 stripe.createInstance();
 
 console.log("Stripe ready");
+
+cron.schedule("0 * * * *", () => {
+  ExpireSubscriptions();
+});
+
+console.log("Setup Cron");
 
 const app = api.app;
 
