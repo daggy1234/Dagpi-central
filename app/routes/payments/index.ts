@@ -67,6 +67,7 @@ export class PaymentRouter implements AppRoute {
             charge_id: obj.id,
             customer: obj.customer ? obj.customer : "Nan",
             amount: parseInt((obj.amount / 100).toString()),
+            currency: obj.currency,
           };
           await db.db().stripe_donation.create({
             data: {
@@ -75,6 +76,7 @@ export class PaymentRouter implements AppRoute {
               receipt: payload.receipt,
               amount: payload.amount,
               customer_id: payload.customer,
+              currency: payload.currency,
             },
           });
           sendEmail(
@@ -129,12 +131,14 @@ export class PaymentRouter implements AppRoute {
                   subscription_start: new Date(
                     payload_data.current_period_start * 1000
                   ),
+                  billing_end: new Date(payload_data.current_period_end * 1000),
                   subscription_end: new Date(
                     (payload_data.current_period_end + 172800) * 1000
                   ),
                   cancelled: false,
                   active: true,
                   ratelimit: rl,
+                  currency: "usd",
                 },
               });
               console.log(out);
@@ -246,6 +250,7 @@ export class PaymentRouter implements AppRoute {
             subscription_start: new Date(
               event_data.current_period_start * 1000
             ),
+            billing_end: new Date(event_data.current_period_end * 1000),
             subscription_end: new Date(
               (event_data.current_period_end + 172800) * 1000
             ),
@@ -286,13 +291,15 @@ export class PaymentRouter implements AppRoute {
       return;
     }
     try {
-      const { client_id, amount, customer_id, capture_id, email } = req.body;
+      const { client_id, amount, customer_id, capture_id, email, currency } =
+        req.body;
       const donation = await db.db().paypal_donation.create({
         data: {
           client_id: client_id,
           amount: amount,
           charge_id: capture_id,
           customer_id: customer_id,
+          currency: currency,
         },
       });
       sendEmail(
