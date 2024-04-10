@@ -136,7 +136,7 @@ export class TokenRouter implements AppRoute {
               apikey: token,
               totaluses: 0,
               enhanced: false,
-              ratelimit: 60,
+              ratelimit: 30,
             },
           });
           response.send(dat);

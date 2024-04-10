@@ -2,7 +2,8 @@ import { v4 } from "uuid";
 import { Request, Response, Router } from "express";
 import { db } from "../../db";
 import { AppRoute } from "../app-route";
-import { parse, sendEmailTemplate, sendEmail } from "../../utils";
+import { parse, sendEmailTemplate, sendEmail, newToken } from "../../utils";
+import { http } from "../../http";
 
 export class AppRouter implements AppRoute {
   public route = "/app";
@@ -16,12 +17,67 @@ export class AppRouter implements AppRoute {
     this.router.delete("/:appid", this.DeleteApp);
     this.router.post("/", this.AddApp);
     this.router.post("/reject", this.RejectApp);
+    this.router.post("/addAll", this.ApproveAll);
   }
 
   public async AllApps(_req: Request, response: Response): Promise<any> {
     const data = await db.db().application.findMany();
     const js = parse(data);
     response.send({ Apps: js });
+  }
+
+  async ApproveAll(_req: Request, response: Response): Promise<any> {
+    const data = await db.db().application.findMany({
+      where: {
+        approved: false,
+      },
+    });
+    const result_map = await Promise.all(
+      data.map(async (val) => {
+        const user = await db.db().user.findUnique({
+          where: {
+            userid: val.appuserid,
+          },
+        });
+        const token = newToken(user.client_id);
+        const resp = await http
+          .client()
+          .get(`addkey/${token}/${val.appuserid}`);
+        const dat =
+          resp.status === 200
+            ? { data: resp.data, status: true }
+            : { data: resp.data, status: false };
+        if (dat.status) {
+          await db.db().tokens.create({
+            data: {
+              userid: val.appuserid,
+              apikey: token,
+              totaluses: 0,
+              enhanced: false,
+              ratelimit: 30,
+            },
+          });
+          const app = await db.db().application.update({
+            where: {
+              uu: val.uu,
+            },
+            data: {
+              approved: true,
+            },
+          });
+          const user = await db.db().user.findUnique({
+            where: {
+              userid: app.appuserid,
+            },
+          });
+          sendEmailTemplate(user.email, JSON.stringify({}), "DagpiApproval");
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+    response.send({ results: result_map });
   }
 
   async GetApp(request: Request, response: Response) {
