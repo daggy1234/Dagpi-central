@@ -32,6 +32,7 @@ export class AppRouter implements AppRoute {
         approved: false,
       },
     });
+    console.log(data);
     const result_map = await Promise.all(
       data.map(async (val) => {
         const user = await db.db().user.findUnique({
@@ -39,6 +40,7 @@ export class AppRouter implements AppRoute {
             userid: val.appuserid,
           },
         });
+        console.log(user);
         const token = newToken(user.client_id);
         const resp = await http
           .client()
@@ -47,6 +49,7 @@ export class AppRouter implements AppRoute {
           resp.status === 200
             ? { data: resp.data, status: true }
             : { data: resp.data, status: false };
+        console.log(dat);
         if (dat.status) {
           await db.db().tokens.create({
             data: {
@@ -65,11 +68,13 @@ export class AppRouter implements AppRoute {
               approved: true,
             },
           });
+          console.log(app);
           const user = await db.db().user.findUnique({
             where: {
               userid: app.appuserid,
             },
           });
+          console.log(user);
           sendEmailTemplate(user.email, JSON.stringify({}), "DagpiApproval");
           return true;
         } else {

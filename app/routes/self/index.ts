@@ -18,8 +18,7 @@ export class SelfRouter implements AppRoute {
   async getData(request: Request, response: Response): Promise<any> {
     if (!request.params.admin_token) {
       response.status(400).send({
-        err:
-          "Needs both client_id and admin_token set in the url like /admin_token",
+        err: "Needs both client_id and admin_token set in the url like /admin_token",
       });
     } else {
       const out = await db.db().cli.findUnique({
@@ -56,8 +55,7 @@ export class SelfRouter implements AppRoute {
   async getDataToken(request: Request, response: Response): Promise<any> {
     if (!request.params.admin_token) {
       response.status(400).send({
-        err:
-          "Needs both client_id and admin_token set in the url like /admin_token",
+        err: "Needs both client_id and admin_token set in the url like /admin_token",
       });
     } else {
       const out = await db.db().cli.findUnique({
