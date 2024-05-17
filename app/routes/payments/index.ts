@@ -261,6 +261,7 @@ export class PaymentRouter implements AppRoute {
         const subscription = await stripe
           .get()
           .subscriptions.retrieve(event_data.subscription);
+        console.log(subscription);
         await db.db().stripe_subscription.update({
           data: {
             active: true,
@@ -274,6 +275,7 @@ export class PaymentRouter implements AppRoute {
             subscription_id: event_data.subscription,
           },
         });
+        console.log("payment success");
         sendEmail(
           event_data.customer_email,
           "Recieved Payment",
