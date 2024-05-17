@@ -9,6 +9,7 @@ export default async function ExpireSubscriptions(): Promise<boolean> {
         subscription_end: {
           lt: new Date(),
         },
+        active: true,
       },
     });
     for (const sub of res) {

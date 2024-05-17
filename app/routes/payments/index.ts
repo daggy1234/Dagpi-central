@@ -87,6 +87,8 @@ export class PaymentRouter implements AppRoute {
           console.log(event);
           response.send(payload);
           return;
+        } else {
+          response.send({ nice: "gg" });
         }
       } else if (event.type == "customer.subscription.created") {
         const payload_data: any = event.data.object;
@@ -170,16 +172,23 @@ export class PaymentRouter implements AppRoute {
         const event_data: any = event.data;
         const pln = event_data.previous_attributes.plan;
         if (event_data.previous_attributes.cancel_at_period_end == false) {
-          console.log("cancellation");
-          await db.db().stripe_subscription.update({
-            data: {
-              cancelled: true,
-            },
-            where: {
-              customer_id: event_data.object.customer,
-            },
-          });
-          response.send({ nice: "gg" });
+          if (event_data.object.cancel_at_period_end == true) {
+            console.log("cancellation");
+            await db.db().stripe_subscription.update({
+              data: {
+                cancelled: true,
+              },
+              where: {
+                customer_id: event_data.object.customer,
+              },
+            });
+            sendEmail(
+              event_data.object.metadata.email,
+              "Sorry to see you go :(",
+              "Cancelling a subscription is hard. Hope you enjoyed Dagpi Premium! If you have any feedback, please let us know at https://server.daggy.tech"
+            );
+            response.send({ nice: "gg" });
+          }
         } else if (
           event_data.previous_attributes.cancel_at_period_end == true
         ) {
@@ -192,6 +201,11 @@ export class PaymentRouter implements AppRoute {
               customer_id: event_data.object.customer,
             },
           });
+          sendEmail(
+            event_data.object.metadata.email,
+            "Welcome Back!",
+            "Glad to see you back at Dagpi Premium! Your support means the world to us!"
+          );
           response.send({ nice: "gg" });
         } else if (pln ? (pln.id ? true : false) : false) {
           console.log("upgrading");
@@ -244,15 +258,16 @@ export class PaymentRouter implements AppRoute {
         response.send({ gg: "nice" });
       } else if (event.type == "invoice.paid") {
         const event_data: any = event.data.object;
+        const subscription = await stripe
+          .get()
+          .subscriptions.retrieve(event_data.subscription);
         await db.db().stripe_subscription.update({
           data: {
             active: true,
-            subscription_start: new Date(
-              event_data.current_period_start * 1000
-            ),
-            billing_end: new Date(event_data.current_period_end * 1000),
+            subscription_start: new Date(event_data.period_start * 1000),
+            billing_end: new Date(subscription.current_period_end * 1000),
             subscription_end: new Date(
-              (event_data.current_period_end + 172800) * 1000
+              (subscription.current_period_end + 172800) * 1000
             ),
           },
           where: {
