@@ -258,11 +258,12 @@ export class PaymentRouter implements AppRoute {
         response.send({ gg: "nice" });
       } else if (event.type == "invoice.paid") {
         const event_data: any = event.data.object;
+        console.log("START");
         const subscription = await stripe
           .get()
           .subscriptions.retrieve(event_data.subscription);
         console.log(subscription);
-        await db.db().stripe_subscription.update({
+        const res = await db.db().stripe_subscription.update({
           data: {
             active: true,
             subscription_start: new Date(event_data.period_start * 1000),
@@ -275,6 +276,7 @@ export class PaymentRouter implements AppRoute {
             subscription_id: event_data.subscription,
           },
         });
+        console.log(res);
         console.log("payment success");
         sendEmail(
           event_data.customer_email,
