@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
 import { db } from "../../db";
-import { http } from "../../http";
 import { stripe } from "../../stripe";
 import { AppRoute } from "../app-route";
 import { sendEmail, makePremium, ExpireSubscriptions } from "../../utils";
@@ -94,7 +93,7 @@ export class PaymentRouter implements AppRoute {
         const payload_data: any = event.data.object;
         const cid = payload_data.metadata.client_id;
         const customer_id = payload_data.customer;
-        const u = await db.db().stripe_customer.upsert({
+        await db.db().stripe_customer.upsert({
           where: { client_id: cid },
           update: { customer_id: customer_id },
           create: {
