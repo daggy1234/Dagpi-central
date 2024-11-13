@@ -12,3 +12,4 @@ app/templates/**/*
 *.log
 data/
 subs.txt
+test.js

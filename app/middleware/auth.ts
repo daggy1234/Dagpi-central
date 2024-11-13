@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 const auth = (request: Request, response: Response, next: NextFunction) => {
   let match;
+  console.log(request.body);
   try {
     match = request.url.toString().match(/^\/[^/]+\//g)[0];
   } catch (err) {

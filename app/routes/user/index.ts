@@ -16,7 +16,7 @@ export class UserRouter implements AppRoute {
   }
 
   public async AddUser(request: Request, response: Response): Promise<any> {
-    console.log(request.body.length);
+    console.log(request.body);
     if (!request.body) {
       response.status(400).send({ msg: "There is no form body" });
       return;
@@ -26,7 +26,18 @@ export class UserRouter implements AppRoute {
       const user_id = BigInt(user);
       const client_id: string = makeid(32);
       const client_secret: string = csprng(128);
-      console.log(client_secret);
+      const user_check = await db.db().user.findUnique({
+        where: {
+          userid: user_id,
+        },
+      });
+      if (user_check) {
+        response.status(401).send({
+          status: "fail",
+          message: "User already exists",
+        });
+        return;
+      }
       const user_p = await db.db().user.create({
         data: {
           userid: user_id,
@@ -44,6 +55,7 @@ export class UserRouter implements AppRoute {
         status: "fail",
         message: err.toString(),
       });
+      return;
     }
   }
 

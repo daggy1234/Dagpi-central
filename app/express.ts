@@ -44,7 +44,7 @@ export class Api {
       })
     );
     this.app.use(urlencoded({ limit: "50mb", extended: true }));
-    this.app.use(Sentry.Handlers.requestHandler());
+    // Sentry.setupExpressErrorHandler(this.app);
     this.app.use(Sentry.Handlers.tracingHandler());
     this.app.use(mgan);
   }
